@@ -1,19 +1,35 @@
 using dotnet_rpg.Models;
+using dotnet_rpg.Services.CharacterService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace dotnet_rpg.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")] // адрес будет примерно так: localhost:xxxx/api/character
-    [Route("[controller]")]     // адрес будет так: localhost:xxx/character
-    public class CharacterController : ControllerBase
-    {
-        private static Character knight = new Character();
+namespace dotnet_rpg.Controllers;
 
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(knight);
-        }
+[ApiController]
+[Route("[controller]")]
+public class CharacterController : ControllerBase
+{
+    private readonly ICharacterService _characterService;
+
+    public CharacterController(ICharacterService characterService)
+    {
+        _characterService = characterService;
+    }
+
+    [HttpGet("GetAll")]
+    public IActionResult Get()
+    {
+        return Ok(_characterService.GetAllCharacters());
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetSingle(int id)
+    {
+        return Ok(_characterService.GetCharacterById(id));
+    }
+
+    [HttpPost]
+    public IActionResult AddCharacter(Character newCharacter)
+    {
+        return Ok(_characterService.AddCharacter(newCharacter));
     }
 }
