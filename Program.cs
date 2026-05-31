@@ -1,14 +1,17 @@
+using dotnet_rpg;
 using dotnet_rpg.Services.CharacterService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
-.AddJsonOptions(options => 
-                options.JsonSerializerOptions.Converters.Add(
-                new System.Text.Json.Serialization.JsonStringEnumConverter()));
-builder.Services.AddOpenApi();
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()));
 
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<AutoMapperProfile>());
 builder.Services.AddScoped<ICharacterService, CharacterService>();
+
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
