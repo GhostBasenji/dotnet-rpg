@@ -15,6 +15,8 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
