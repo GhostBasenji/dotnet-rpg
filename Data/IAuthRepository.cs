@@ -1,3 +1,4 @@
+using dotnet_rpg.Dtos.Character;
 using dotnet_rpg.Models;
 
 namespace dotnet_rpg.Data;
