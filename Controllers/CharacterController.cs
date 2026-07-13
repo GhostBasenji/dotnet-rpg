@@ -21,9 +21,7 @@ public class CharacterController : ControllerBase
     [HttpGet("GetAll")]
     public async Task<IActionResult> Get()
     {
-        var userId = int.Parse(User.Claims
-            .First(c => c.Type == ClaimTypes.NameIdentifier).Value);
-        return Ok(await _characterService.GetAllCharacters(userId));
+        return Ok(await _characterService.GetAllCharacters());
     }
 
     [HttpGet("{id}")]

@@ -33,6 +33,8 @@ builder.Services.AddScoped<ICharacterService, CharacterService>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
