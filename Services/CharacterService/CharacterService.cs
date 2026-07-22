@@ -29,13 +29,15 @@ public class CharacterService : ICharacterService
     {
         var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
         var character = _mapper.Map<Character>(newCharacter);
-        character.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == GetUserId());
-
+        character.User = await _context.Users
+        .FirstOrDefaultAsync(u => u.Id == GetUserId());
+        
         _context.Characters.Add(character);
         await _context.SaveChangesAsync();
         
         serviceResponse.Data = await _context.Characters
             .Where(c=> c.User!.Id == GetUserId())
+            .Include(c => c.Weapon)
             .Select(c=> _mapper.Map<GetCharacterDto>(c))
             .ToListAsync();
         return serviceResponse;
@@ -71,6 +73,7 @@ public class CharacterService : ICharacterService
         var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
         var dbCharacters = await _context.Characters
             .Where(c => c.User!.Id == GetUserId())
+            .Include(c => c.Weapon)
             .ToListAsync();
         serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(dbCharacters);
         return serviceResponse;
@@ -80,6 +83,7 @@ public class CharacterService : ICharacterService
     {
         var serviceResponse = new ServiceResponse<GetCharacterDto>();
         var dbCharacter = await _context.Characters
+            .Include(c => c.Weapon)
             .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserId());
         serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
         return serviceResponse;
@@ -92,6 +96,7 @@ public class CharacterService : ICharacterService
         {
             var character = await _context.Characters
                 .Include(c => c.User)
+                .Include(c => c.Weapon)
                 .FirstOrDefaultAsync(c => c.Id == updatedCharacter.Id)
                 ?? throw new Exception($"Персонаж с Id '{updatedCharacter.Id}' не найден.");
 
