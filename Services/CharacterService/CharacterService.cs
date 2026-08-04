@@ -74,6 +74,7 @@ public class CharacterService : ICharacterService
         var dbCharacters = await _context.Characters
             .Where(c => c.User!.Id == GetUserId())
             .Include(c => c.Weapon)
+            .Include(c => c.CharacterSkills).ThenInclude(cs => cs.Skill)
             .ToListAsync();
         serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(dbCharacters);
         return serviceResponse;
@@ -84,6 +85,7 @@ public class CharacterService : ICharacterService
         var serviceResponse = new ServiceResponse<GetCharacterDto>();
         var dbCharacter = await _context.Characters
             .Include(c => c.Weapon)
+            .Include(c => c.CharacterSkills).ThenInclude(cs => cs.Skill)
             .FirstOrDefaultAsync(c => c.Id == id && c.User!.Id == GetUserId());
         serviceResponse.Data = _mapper.Map<GetCharacterDto>(dbCharacter);
         return serviceResponse;

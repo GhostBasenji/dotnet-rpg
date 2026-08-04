@@ -6,6 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using dotnet_rpg.Services.WeaponService;
+using dotnet_rpg.Services.CharacterSkillService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IWeaponService, WeaponService>();
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+builder.Services.AddScoped<ICharacterSkillService, CharacterSkillService>();
 
 builder.Services.AddHttpContextAccessor();
 
